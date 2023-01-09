@@ -1,4 +1,4 @@
 -r base.txt
-django-heroku
 dj-database-url
-django-postgrespool
+django-postgrespool2
+whitenoise[brotli]
