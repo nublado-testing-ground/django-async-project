@@ -21,7 +21,7 @@ class BotWebhookView(View):
             try:
                 data = json.loads(request.body.decode('utf-8'))
             except Exception as e:
-                error = "Error in decoding update: {e}".format(e)
+                error = f"Error in decoding update: {e}"
                 logger.error(error)
 
                 raise Http404
@@ -29,9 +29,11 @@ class BotWebhookView(View):
             try:
                 update = Update.de_json(data, bot.telegram_bot)
                 async with bot.application:
+                    await bot.application.start()
                     await bot.application.process_update(update)
+                    await bot.application.stop()
             except Exception as e:
-                error = "Error in processing update: {e}".format(e)
+                error = f"Error in processing update: {e}"
                 logger.error(error)
 
             return JsonResponse({})
