@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import gettext_noop as _
 
 # Get key env values from the virtual environment.
 def get_env_variable(var_name):
@@ -40,6 +41,7 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     'core.apps.CoreConfig',
     'users.apps.UserConfig',
+    'django_telegram.apps.DjangoTelegramConfig',
     'project_app.apps.ProjectAppConfig'
 ]
 
@@ -95,13 +97,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
+EN = "en"
+ES = "es"
+LANGUAGE_CODE = EN
+LANGUAGES = [
+    (EN, _("English")),
+    (ES, _("Spanish")),
+]
+LANGUAGES_DICT = dict(LANGUAGES)
 LOCALE_PATHS = (
     APPS_ROOT / "project_app" / "locale",
 )
 
-LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
@@ -153,4 +161,37 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+# Telegram bot stuff
+BOT_MODE_WEBHOOK = "webhook"
+BOT_MODE_POLLING = "polling"
+
+# Command line arg to run this bot
+PROTO_BOT = 'protobot'
+PROTO_BOT_TOKEN = get_env_variable('PROTO_BOT_TOKEN')
+PROTO_GROUP_ID = int(get_env_variable('PROTO_GROUP_ID'))
+PROTO_REPO_ID = int(get_env_variable('PROTO_REPO_ID'))
+PROTO_GROUP_OWNER_ID = int(get_env_variable('PROTO_GROUP_OWNER_ID'))
+PROTO_SUDO_LIST = [
+    PROTO_GROUP_OWNER_ID, 
+]
+
+DJANGO_TELEGRAM = {
+    'mode': BOT_MODE_WEBHOOK,
+    'webhook_port': int(os.environ.get('PORT', 5000)),
+    'webhook_site' : "https://djangoasync.onrender.com",
+	'webhook_path' : "bot/webhook",
+    'bots': {
+        PROTO_BOT_TOKEN: {
+            'token': PROTO_BOT_TOKEN,
+            'group_id': PROTO_GROUP_ID,
+            'repo_id': PROTO_REPO_ID,
+            'sudo_list': PROTO_SUDO_LIST
+        },
+    }
+}
+
+BOT_CLI = {
+    PROTO_BOT: DJANGO_TELEGRAM['bots'][PROTO_BOT_TOKEN]
 }
