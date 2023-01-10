@@ -55,7 +55,6 @@ class Bot(object):
             logger.info(f"Bot {self.name} initiated with {dt['mode']}.")
         except Exception as e:
             logger.error(e)
-            # raise ImproperlyConfigured(django_telegram_settings_error)
 
     def start_polling(self):
         logger.info("Bot mode: polling")

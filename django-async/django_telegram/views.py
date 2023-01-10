@@ -13,7 +13,7 @@ logger = logging.getLogger('django')
 
 
 class BotWebhookView(View):
-    def post(self, request, *args, **kwargs):
+    async def post(self, request, *args, **kwargs):
         token = kwargs['token']
         bot = DjangoTelegramConfig.bot_registry.get_bot(token)
 
@@ -28,7 +28,7 @@ class BotWebhookView(View):
 
             try:
                 update = Update.de_json(data, bot.telegram_bot)
-                bot.dispatcher.process_update(update)
+                await bot.application.process_update(update)
             except Exception as e:
                 error = "Error in processing update: {e}".format(e)
                 logger.error(error)
