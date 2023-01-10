@@ -10,7 +10,7 @@ services:
   env: python
   buildCommand: "./build.sh"
   # startCommand: "gunicorn config.wsgi:application"
-  startCommand: "gunicorn config.asgi -w 4 -k uvicorn.workers.UvicornWorker"
+  startCommand: "gunicorn config.asgi:application -w 4 -k uvicorn.workers.UvicornWorker"
   autoDeploy: false
   envVars:
     - key: DATABASE_URL
