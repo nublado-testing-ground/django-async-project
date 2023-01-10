@@ -1,4 +1,5 @@
 import logging
+import asyncio
 
 from core.utils import remove_lead_and_trail_slash
 from telegram.constants import ParseMode
@@ -32,6 +33,7 @@ class Bot(object):
             defaults=defaults
         )
         self.application = None
+        self.webhook_url = webhook_url
 
         try:
             dt = settings.DJANGO_TELEGRAM
@@ -41,25 +43,28 @@ class Bot(object):
                 self.application = Application.builder().bot(self.telegram_bot).updater(None).build()
                 if not self.webhook_url:
                     webhook_site = remove_lead_and_trail_slash(dt['webhook_site'])
-                    webhook_path = remove_lead_and_trail_slash(dt['set_webhook_path'])
+                    webhook_path = remove_lead_and_trail_slash(dt['webhook_path'])
                     self.webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
-                logger.info(self.application)
+                    loop = asyncio.new_event_loop()
+                    logger.info("in loop")
+                    ss = loop.run_until_complete(self.start_webhook())
+                    loop.close()
+                    logger.info("out loop")
             else:
                 raise ImproperlyConfigured(bot_mode_error)
-        except:
-            raise ImproperlyConfigured(django_telegram_settings_error)
+            logger.info(f"Bot {self.name} initiated with {dt['mode']}.")
+        except Exception as e:
+            logger.error(e)
+            # raise ImproperlyConfigured(django_telegram_settings_error)
 
     def start_polling(self):
         logger.info("Bot mode: polling")
         self.application.run_polling()
 
     async def start_webhook(self):
-        logger.info("Bot mode: webhooks")
-        dt = settings.DJANGO_TELEGRAM
-        webhook_site = remove_lead_and_trail_slash(dt['webhook_site'])
-        webhook_path = remove_lead_and_trail_slash(dt['webhook_path'])
-        webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
-        await self.telegram_bot.set_webhook(webhook_url)
+        if self.webhook_url:
+            await self.telegram_bot.set_webhook(self.webhook_url)
+            logger.info(f"Bot {self.name} webhook set.")
 
     def add_handler(self, handler, handler_group: int = 0):
         try:
