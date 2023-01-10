@@ -36,3 +36,25 @@ class BotWebhookView(View):
             return JsonResponse({})
         else:
             raise Http404
+
+class BotWebhookView(View):
+    async def post(self, request, *args, **kwargs):
+        token = kwargs['token']
+        bot = DjangoTelegramConfig.bot_registry.get_bot(token)
+
+        if bot is not None:
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+            except Exception as e:
+                logger.error(e)
+                raise Http404
+
+            try:
+                update = Update.de_json(data, bot.telegram_bot)
+                await bot.application.process_update(update)
+            except TelegramError as e:
+                logger.error(e)
+
+            return JsonResponse({})
+        else:
+            raise Http404

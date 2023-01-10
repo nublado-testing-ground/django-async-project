@@ -18,7 +18,12 @@ django_telegram_settings_error = "DJANGO_TELEGRAM settings are missing or improp
 
 
 class Bot(object):
-    def __init__(self, token: str, name: str=None):
+    def __init__(
+        self,
+        token: str,
+        name: str = None,
+        webhook_url: str = None
+    ):
         self.token = token
         self.name = name
         defaults = Defaults(parse_mode=ParseMode.MARKDOWN)
@@ -34,6 +39,10 @@ class Bot(object):
                 self.application = ApplicationBuilder().bot(self.telegram_bot).build()
             elif dt['mode'] == settings.BOT_MODE_WEBHOOK:
                 self.application = Application.builder().bot(self.telegram_bot).updater(None).build()
+                if not self.webhook_url:
+                    webhook_site = remove_lead_and_trail_slash(dt['webhook_site'])
+                    webhook_path = remove_lead_and_trail_slash(dt['set_webhook_path'])
+                    self.webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
                 logger.info(self.application)
             else:
                 raise ImproperlyConfigured(bot_mode_error)
