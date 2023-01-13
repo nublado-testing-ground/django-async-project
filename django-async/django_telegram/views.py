@@ -37,7 +37,7 @@ class BotWebhookView(View):
 
         if bot is not None:
             try:
-                data = json.loads(request.body.decode('utf-8'))
+                data = await json.loads(request.body.decode('utf-8'))
                 logger.info(data)
             except Exception as e:
                 logger.error(f"Error in decoding update: {e}")
@@ -45,6 +45,7 @@ class BotWebhookView(View):
             try:
                 update = Update.de_json(data, bot.telegram_bot)
                 logger.info(f"Update from webhook: {update}")
+                await bot.application.update_queue.put(update)
                 # await bot.application.process_update(update)
             except Exception as e:
                 logger.error(f"Error in processing update: {e}")
