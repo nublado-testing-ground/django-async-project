@@ -37,7 +37,7 @@ class BotWebhookView(View):
 
         if bot is not None:
             try:
-                data = await json.loads(request.body.decode('utf-8'))
+                data = json.loads(request.body.decode('utf-8'))
                 logger.info(data)
             except Exception as e:
                 logger.error(f"Error in decoding update: {e}")
