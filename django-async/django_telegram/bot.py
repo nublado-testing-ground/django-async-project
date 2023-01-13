@@ -59,6 +59,7 @@ class Bot(object):
     async def start_webhook(self):
         if self.webhook_url:
             await self.telegram_bot.set_webhook(self.webhook_url)
+            await self.application.initialize()
             logger.info(f"Bot {self.name} webhook set.")
         else:
             logger.error(f"Bot {self.token} webhook url isn't set.")

@@ -38,7 +38,7 @@ class BotWebhookView(View):
         if bot is not None:
             try:
                 data = json.loads(request.body.decode('utf-8'))
-                logger.info(data)
+                logger.info(f"Data from webhook: {data}")
             except Exception as e:
                 logger.error(f"Error in decoding update: {e}")
                 raise Http404
