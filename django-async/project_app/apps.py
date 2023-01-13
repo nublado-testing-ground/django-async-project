@@ -29,11 +29,11 @@ class ProjectAppConfig(AppConfig):
                             set_webhook_path = remove_lead_and_trail_slash(dt['set_webhook_path'])
                             set_webhook_url = f"{set_webhook_site}/{set_webhook_path}/{bot.token}/"
                             logger.info(set_webhook_url)
-                            r = httpx.post(set_webhook_url, data={})
-                            if r.status_code == httpx.codes.OK:
-                                logger.info(f"Success")
-                            else:
-                                logger.info("ERROR")
+                            # r = httpx.post(set_webhook_url, data={})
+                            # if r.status_code == httpx.codes.OK:
+                            #     logger.info(f"Success")
+                            # else:
+                            #     logger.info("ERROR")
                     except Exception as e:
                         error = "Bot {} doesn't exist or is improperly configured.".format(bot_name)
                         logger.error(error)
