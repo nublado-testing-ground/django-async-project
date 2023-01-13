@@ -45,12 +45,9 @@ class Bot(object):
                     webhook_site = remove_lead_and_trail_slash(dt['webhook_site'])
                     webhook_path = remove_lead_and_trail_slash(dt['webhook_path'])
                     self.webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
-                    asyncio.run(self.start_webhook())
-                    logger.info("asyncio run start webhook")
-            #         logger.info("in loop")
-            #         ss = loop.run_until_complete(self.start_webhook())
-            #         loop.close()
-            #         logger.info("out loop")
+                loop = asyncio.get_loop()
+                loop.run_until_complete(self.start_weebhook)
+                logger.info("asyncio run start webhook")
             else:
                 raise ImproperlyConfigured(bot_mode_error)
             logger.info(f"Bot {self.name} initiated with {dt['mode']}.")
