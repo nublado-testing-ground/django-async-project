@@ -33,7 +33,7 @@ class ProjectAppConfig(AppConfig):
                             if r.status_code == httpx.codes.OK:
                                 logger.info(f"Bot {bot.token} webhook started with post request")
                             else:
-                                logger.info("Error starting bot {bot.token} webhook with post request.")
+                                logger.error(f"Error starting bot {bot.token} webhook with post request.")
                     except Exception as e:
                         logger.error(f"Bot {bot_name} doesn't exist or is improperly configured.")
                         logger.error(e)

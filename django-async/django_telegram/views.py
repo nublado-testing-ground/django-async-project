@@ -19,7 +19,7 @@ class BotSetWebhookView(View):
 
         if bot is not None:
             try:
-                # await bot.start_webhook()
+                await bot.start_webhook()
                 logger.info(f"Webhook for bot {bot.token} set successfully in view.")
                 return JsonResponse({})
             except Exception as e:
