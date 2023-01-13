@@ -46,10 +46,10 @@ class BotWebhookView(View):
                 update = Update.de_json(data, bot.telegram_bot)
 
                 async with bot.application:
-                    await bot.application.start()
-                    # await bot.application.process_update(update)
-                    await bot.application.update_queue.put(update)
-                    await bot.application.stop()
+                    #await bot.application.start()
+                    await bot.application.process_update(update)
+                    # await bot.application.update_queue.put(update)
+                    #await bot.application.stop()
                 logger.info(f"Update from webhook: {update}")
             except Exception as e:
                 logger.error(f"Error in processing update: {e}")
