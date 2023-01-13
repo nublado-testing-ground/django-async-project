@@ -165,6 +165,16 @@ LOGGING = {
     },
 }
 
+MON, TUE, WED, THU, FRI, SAT, SUN = range(7)
+WEEKDAYS = [
+    _("Monday"), _("Tuesday"), _("Wednesday"), _("Thursday"),
+    _("Friday"), _("Saturday"), _("Sunday")
+]
+WEEKDAYS_ABBR = [
+    _("Mon."), _("Tue."), _("Wed."), _("Thu."),
+    _("Fri."), _("Sat."), _("Sun.")
+]
+
 # Telegram bot stuff
 BOT_MODE_WEBHOOK = "webhook"
 BOT_MODE_POLLING = "polling"
