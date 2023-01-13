@@ -45,7 +45,7 @@ class Bot(object):
                     webhook_site = remove_lead_and_trail_slash(dt['webhook_site'])
                     webhook_path = remove_lead_and_trail_slash(dt['webhook_path'])
                     self.webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
-                loop = asyncio.get_loop()
+                loop = asyncio.get_event_loop()
                 loop.run_until_complete(self.start_weebhook)
                 logger.info("asyncio run start webhook")
             else:
