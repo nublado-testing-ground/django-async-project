@@ -19,12 +19,12 @@ class ProtoBotConfig(AppConfig):
             from .bot_commands.group_points import (
                 add_points_handler, remove_points_handler
             )
-            # from .bot_commands.group_notes import (
-            #     group_notes,
-            #     save_group_note,
-            #     remove_group_note,
-            #     get_group_note_handler
-            # )
+            from .bot_commands.group_notes import (
+                group_notes,
+                save_group_note,
+                remove_group_note,
+                get_group_note_handler
+            )
             # from .bot_commands.group_admin import(
             #     update_group_admins,
             #     get_non_members,
@@ -61,10 +61,10 @@ class ProtoBotConfig(AppConfig):
             bot.add_handler(add_points_handler, handler_group=2)
             bot.add_handler(remove_points_handler, handler_group=2)
             # notes
-            # bot.add_command_handler('group_notes', group_notes)
-            # bot.add_command_handler('save_group_note', save_group_note)
-            # bot.add_command_handler('remove_group_note', remove_group_note)
-            # bot.add_handler(get_group_note_handler, handler_group=2)
+            bot.add_command_handler('group_notes', group_notes)
+            bot.add_command_handler('save_group_note', save_group_note)
+            bot.add_command_handler('remove_group_note', remove_group_note)
+            bot.add_handler(get_group_note_handler, handler_group=2)
             # Add the bot to the registry.
             bot_registry.add_bot(ProtoBotConfig.bot_key, bot)
             self.is_ready = True

@@ -2,11 +2,11 @@ import logging
 import random
 
 from asgiref.sync import sync_to_async
-
 from telegram import Update, Bot
 from telegram.helpers import escape_markdown
 from telegram.constants import ChatMemberStatus
 from telegram.constants import ChatType
+
 from django.conf import settings
 
 from ..models import GroupMember
