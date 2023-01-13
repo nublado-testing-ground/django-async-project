@@ -43,6 +43,7 @@ LOCAL_APPS = [
     'users.apps.UserConfig',
     'django_telegram.apps.DjangoTelegramConfig',
     'bot_misc.apps.BotMiscConfig',
+    'group_points.apps.GroupPointsConfig',
     'proto_bot.apps.ProtoBotConfig',
     'project_app.apps.ProjectAppConfig'
 ]
