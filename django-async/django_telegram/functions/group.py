@@ -1,6 +1,8 @@
 import logging
 import random
 
+from asgiref.sync import sync_to_async
+
 from telegram import Update, Bot
 from telegram.helpers import escape_markdown
 from telegram.constants import ChatMemberStatus
@@ -22,7 +24,7 @@ GROUP_TYPES = [
     ChatType.SUPERGROUP
 ]
 
-
+@sync_to_async
 def get_random_group_member(group_id: int):
     members = GroupMember.objects.filter(group_id=group_id)
     if len(members) > 0:

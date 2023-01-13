@@ -12,11 +12,11 @@ from django_telegram.functions.decorators import restricted_group_member
 from bot_misc.bot_commands.misc import (
     start as cmd_start,
     get_time as cmd_get_time,
-    #reverse_text as cmd_reverse_text,
-    #echo as cmd_echo,
-    #hello as cmd_hello,
-    #roll as cmd_roll,
-    #roll_sum as cmd_roll_sum
+    reverse_text as cmd_reverse_text,
+    echo as cmd_echo,
+    hello as cmd_hello,
+    roll as cmd_roll,
+    roll_sum as cmd_roll_sum
 )
 
 logger = logging.getLogger('django')
@@ -25,24 +25,24 @@ logger = logging.getLogger('django')
 GROUP_ID = settings.PROTO_GROUP_ID
 
 
-#@restricted_group_member(group_id=GROUP_ID, group_chat=False)
-#@send_typing_action
-def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+@restricted_group_member(group_id=GROUP_ID, group_chat=False)
+@send_typing_action
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send a message and prompt a reply on start."""
-    cmd_start(update, context)
+    await cmd_start(update, context)
 
 
-# @restricted_group_member(group_id=GROUP_ID, private_chat=False)
-# @send_typing_action
-# def hello(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     cmd_hello(update, context, GROUP_ID)
+@restricted_group_member(group_id=GROUP_ID, private_chat=False)
+@send_typing_action
+async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await cmd_hello(update, context, GROUP_ID)
 
 
-# @restricted_group_member(group_id=GROUP_ID, member_status=ChatMemberStatus.OWNER)
-# @send_typing_action
-# def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Echo a message to the group."""
-#     cmd_echo(update, context, GROUP_ID)
+@restricted_group_member(group_id=GROUP_ID, member_status=ChatMemberStatus.OWNER)
+@send_typing_action
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Echo a message to the group."""
+    await cmd_echo(update, context, GROUP_ID)
 
 
 @restricted_group_member(group_id=GROUP_ID)
@@ -52,22 +52,22 @@ async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await cmd_get_time(update, context)
 
 
-# @restricted_group_member(group_id=GROUP_ID)
-# @send_typing_action
-# def reverse_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Reverse the text provided as an argument and display it."""
-#     cmd_reverse_text(update, context)
+@restricted_group_member(group_id=GROUP_ID)
+@send_typing_action
+async def reverse_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Reverse the text provided as an argument and display it."""
+    await cmd_reverse_text(update, context)
 
 
-# @restricted_group_member(group_id=GROUP_ID, private_chat=True)
-# @send_typing_action
-# def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Roll specified number of dice and show results as text."""
-#     cmd_roll(update, context)
+@restricted_group_member(group_id=GROUP_ID, private_chat=True)
+@send_typing_action
+async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Roll specified number of dice and show results as text."""
+    await cmd_roll(update, context)
 
 
-# @restricted_group_member(group_id=GROUP_ID, private_chat=True)
-# @send_typing_action
-# def roll_sum(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Roll specified number of dice and show results as text."""
-#     cmd_roll_sum(update, context)
+@restricted_group_member(group_id=GROUP_ID, private_chat=True)
+@send_typing_action
+async def roll_sum(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Roll specified number of dice and show results as text."""
+    await cmd_roll_sum(update, context)

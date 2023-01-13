@@ -46,115 +46,115 @@ async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# def reverse_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Reverse the text provided as an argument and display it."""
-#     if len(context.args) >= 1:
-#         message = parse_command_last_arg_text(
-#             update.effective_message,
-#             maxsplit=1
-#         )
-#         context.bot.send_message(
-#             chat_id=update.effective_chat.id,
-#             text=message[::-1]
-#         )
-#     else:
-#         message = _("The command requires some text to be reversed.")
-#         context.bot.send_message(
-#             chat_id=update.effective_chat.id,
-#             text=message
-#         )
+async def reverse_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Reverse the text provided as an argument and display it."""
+    if len(context.args) >= 1:
+        message = parse_command_last_arg_text(
+            update.effective_message,
+            maxsplit=1
+        )
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=message[::-1]
+        )
+    else:
+        message = _("The command requires some text to be reversed.")
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=message
+        )
 
 
-# def hello(
-#     update: Update,
-#     context: ContextTypes.DEFAULT_TYPE,
-#     group_id: int = None
-# ) -> None:
-#     if group_id:
-#         member = get_random_group_member(group_id)
-#         if member:
-#             try:
-#                 user = update.effective_user
-#                 chat_member = context.bot.get_chat_member(group_id, member.user_id)
-#                 message = _("Hey {}.\n{} says hello.").format(
-#                     chat_member.user.mention_markdown(),
-#                     user.mention_markdown()
-#                 )
-#                 context.bot.send_message(
-#                     chat_id=group_id,
-#                     text=message
-#                 )
-#             except:
-#                 pass
+async def hello(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    group_id: int = None
+) -> None:
+    if group_id:
+        member = await get_random_group_member(group_id)
+        if member:
+            try:
+                user = update.effective_user
+                chat_member = context.bot.get_chat_member(group_id, member.user_id)
+                message = _("Hey {}.\n{} says hello.").format(
+                    chat_member.user.mention_markdown(),
+                    user.mention_markdown()
+                )
+                await context.bot.send_message(
+                    chat_id=group_id,
+                    text=message
+                )
+            except:
+                pass
 
 
-# def echo(
-#     update: Update,
-#     context: ContextTypes.DEFAULT_TYPE,
-#     group_id: int = None
-# ) -> None:
-#     """Echo a message to the group."""
-#     if group_id:
-#         if len(context.args) >= 1:
-#             message = parse_command_last_arg_text(
-#                 update.effective_message,
-#                 maxsplit=1
-#             )
-#             context.bot.send_message(
-#                 chat_id=group_id,
-#                 text=message
-#             )
+async def echo(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    group_id: int = None
+) -> None:
+    """Echo a message to the group."""
+    if group_id:
+        if len(context.args) >= 1:
+            message = parse_command_last_arg_text(
+                update.effective_message,
+                maxsplit=1
+            )
+            await context.bot.send_message(
+                chat_id=group_id,
+                text=message
+            )
 
 
-# def roll_dice_c(
-#     update: Update,
-#     context: ContextTypes.DEFAULT_TYPE,
-#     min_dice=1,
-#     max_dice=10,
-#     dice_min_val=1,
-#     dice_max_val=6,
-#     dice_sum=False
-# ):
-#     if len(context.args) >= 1:
-#         int_arg = int(context.args[0])
-#         if int_arg >= min_dice and int_arg <= max_dice:
-#             num_dice = int_arg
-#             results = []
-#             user = update.effective_user
-#             for x in range(num_dice):
-#                 result = random.randint(dice_min_val, dice_max_val)
-#                 results.append(result)
-#             if dice_sum:
-#                 total = sum(results)
-#                 message = _("{} has rolled {}.\n\n Sum: {}").format(
-#                     user.mention_markdown(),
-#                     results,
-#                     total
-#                 )
-#             else:
-#                 message = _("{} has rolled {}.").format(
-#                     user.mention_markdown(),
-#                     results
-#                 )
-#             context.bot.send_message(
-#                 chat_id=update.effective_chat.id,
-#                 text=message 
-#             )
-#     else:
-#         message = _("Please specify the number of dice to be rolled ({} - {}).").format(
-#             min_dice,
-#             max_dice
-#         )
-#         context.bot.send_message(
-#             chat_id=update.effective_chat.id,
-#             text=message
-#         )
+async def roll_dice_c(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    min_dice=1,
+    max_dice=10,
+    dice_min_val=1,
+    dice_max_val=6,
+    dice_sum=False
+):
+    if len(context.args) >= 1:
+        int_arg = int(context.args[0])
+        if int_arg >= min_dice and int_arg <= max_dice:
+            num_dice = int_arg
+            results = []
+            user = update.effective_user
+            for x in range(num_dice):
+                result = random.randint(dice_min_val, dice_max_val)
+                results.append(result)
+            if dice_sum:
+                total = sum(results)
+                message = _("{} has rolled {}.\n\n Sum: {}").format(
+                    user.mention_markdown(),
+                    results,
+                    total
+                )
+            else:
+                message = _("{} has rolled {}.").format(
+                    user.mention_markdown(),
+                    results
+                )
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=message 
+            )
+    else:
+        message = _("Please specify the number of dice to be rolled ({} - {}).").format(
+            min_dice,
+            max_dice
+        )
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=message
+        )
 
-# def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Roll specified number of dice and show results as text."""
-#     roll_dice_c(update, context, dice_sum=False)
+async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Roll specified number of dice and show results as text."""
+    await roll_dice_c(update, context, dice_sum=False)
 
 
-# def roll_sum(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     """Roll specified number of dice and show results as text."""
-#     roll_dice_c(update, context, dice_sum=True)
+async def roll_sum(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Roll specified number of dice and show results as text."""
+    await roll_dice_c(update, context, dice_sum=True)

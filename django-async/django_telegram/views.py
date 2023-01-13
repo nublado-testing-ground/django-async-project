@@ -2,7 +2,6 @@ import json
 import logging
 
 from telegram import Update
-from telegram.error import TelegramError
 
 from django.http import Http404, JsonResponse
 from django.views import View

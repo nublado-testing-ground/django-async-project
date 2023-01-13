@@ -34,7 +34,8 @@ class ProtoBotConfig(AppConfig):
             #     set_bot_language
             # )
             from .bot_commands.misc import (
-                start, get_time
+                start, get_time, reverse_text,
+                echo, hello, roll, roll_sum
             )
 
             bot_registry = DjangoTelegramConfig.bot_registry
@@ -50,11 +51,11 @@ class ProtoBotConfig(AppConfig):
             # bot.add_handler(welcome_button_handler, handler_group=2)
             # misc
             bot.add_command_handler('start', start)
-            #bot.add_command_handler('reverse', reverse_text)
-            # bot.add_command_handler('echo', echo)
-            # bot.add_command_handler('hello', hello)
-            # bot.add_command_handler('roll', roll)
-            # bot.add_command_handler('roll_sum', roll_sum)
+            bot.add_command_handler('reverse', reverse_text)
+            bot.add_command_handler('echo', echo)
+            bot.add_command_handler('hello', hello)
+            bot.add_command_handler('roll', roll)
+            bot.add_command_handler('roll_sum', roll_sum)
             bot.add_command_handler('get_time', get_time)
             # group_points
             # bot.add_handler(add_points_handler, handler_group=2)

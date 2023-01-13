@@ -22,4 +22,4 @@ EMAIL_HOST_PASSWORD = None
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '~/tmp/email-messages/'
 
-# DJANGO_TELEGRAM['mode'] = BOT_MODE_POLLING
+DJANGO_TELEGRAM['mode'] = BOT_MODE_POLLING
