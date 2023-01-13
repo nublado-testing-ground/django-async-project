@@ -63,8 +63,7 @@ class Bot(object):
             await self.telegram_bot.set_webhook(self.webhook_url)
             logger.info(f"Bot {self.name} webhook set.")
         else:
-            error = f"Bot {self.token} webhook url isn't set."
-            logger.error(error)
+            logger.error(f"Bot {self.token} webhook url isn't set.")
             raise ImproperlyConfigured(error)
 
     def add_handler(self, handler, handler_group: int = 0):

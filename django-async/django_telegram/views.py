@@ -19,17 +19,14 @@ class BotSetWebhookView(View):
 
         if bot is not None:
             try:
-                await bot.start_webhook()
+                # await bot.start_webhook()
                 logger.info(f"Webhook for bot {bot.token} set successfully in view.")
                 return JsonResponse({})
             except Exception as e:
-                error = f"Error in setting up webhook for bot {bot.token}: {e}"
-                logger.error(error)
-
+                logger.error(f"Error in setting up webhook for bot {bot.token}: {e}")
                 raise Http404
         else:
-            error = f"Requested bot {token} not found."
-            logger.error(error)
+            logger.error(f"Requested bot {token} not found.")
             raise Http404
 
 
@@ -43,18 +40,13 @@ class BotWebhookView(View):
                 data = json.loads(request.body.decode('utf-8'))
                 logger.info(data)
             except Exception as e:
-                error = f"Error in decoding update: {e}"
-                logger.error(error)
-
+                logger.error(f"Error in decoding update: {e}")
                 raise Http404
-
             try:
                 update = Update.de_json(data, bot.telegram_bot)
                 # await bot.application.process_update(update)
             except Exception as e:
-                error = f"Error in processing update: {e}"
-                logger.error(error)
-
+                logger.error(f"Error in processing update: {e}")
             return JsonResponse({})
         else:
             raise Http404
