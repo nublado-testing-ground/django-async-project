@@ -41,13 +41,10 @@ class Bot(object):
                 self.application = ApplicationBuilder().bot(self.telegram_bot).build()
             elif dt['mode'] == settings.BOT_MODE_WEBHOOK:
                 self.application = Application.builder().bot(self.telegram_bot).updater(None).build()
-                if not self.webhook_url:
+                if not webhook_url:
                     webhook_site = remove_lead_and_trail_slash(dt['webhook_site'])
                     webhook_path = remove_lead_and_trail_slash(dt['webhook_path'])
                     self.webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
-                loop = asyncio.get_event_loop()
-                loop.run_until_complete(self.start_weebhook)
-                logger.info("asyncio run start webhook")
             else:
                 raise ImproperlyConfigured(bot_mode_error)
             logger.info(f"Bot {self.name} initiated with {dt['mode']}.")
@@ -58,10 +55,16 @@ class Bot(object):
         logger.info("Bot mode: polling")
         self.application.run_polling()
 
-    async def start_webhook(self):
+    async def start_webhook(self, webhook_url: str = None):
+        if webhook_url:
+            self.webhook_url = webhook_url
         if self.webhook_url:
             await self.telegram_bot.set_webhook(self.webhook_url)
             logger.info(f"Bot {self.name} webhook set.")
+        else:
+            error = f"Bot {self.token} webhook url isn't set."
+            logger.error(error)
+            raise ImproperlyConfigured(error)
 
     def add_handler(self, handler, handler_group: int = 0):
         try:

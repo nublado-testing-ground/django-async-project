@@ -184,6 +184,7 @@ DJANGO_TELEGRAM = {
     'webhook_port': int(os.environ.get('PORT', 5000)),
     'webhook_site' : "https://djangoasync.onrender.com",
 	'webhook_path' : "bot/webhook",
+    'set_webhook_path': "bot/setwebhook",
     'bots': {
         PROTO_BOT_TOKEN: {
             'token': PROTO_BOT_TOKEN,
