@@ -27,7 +27,7 @@ GROUP_TYPES = [
 @sync_to_async
 def get_random_group_member(group_id: int):
     members = GroupMember.objects.filter(group_id=group_id)
-    if len(members) > 0:
+    if members.count() > 0:
         index = random.randint(0, len(members) - 1)
         return members[index]
     else:
@@ -56,9 +56,10 @@ async def is_group_chat(bot: Bot, chat_id: int) -> bool:
         return False
 
 
-async def is_group(bot: Bot, chat_id: int, group_id: int) -> bool:
+async def is_group_id(bot: Bot, chat_id: int, group_id: int) -> bool:
     """Returns whether chat is a specific group chat by id"""
     return await is_group_chat(bot, chat_id) and chat_id == group_id
+
 
 
 async def is_member_status(
@@ -73,7 +74,7 @@ async def is_member_status(
             if chat_member.status in GROUP_MEMBERS.keys():
                 return GROUP_MEMBERS[chat_member.status] >= GROUP_MEMBERS[member_status]
             else:
-                logger.warn("Chat member status not in GROUP_MEMBERS.")
+                logger.warn(f"Chat member status {chat_member.status} not in GROUP_MEMBERS.")
                 return False
         else:
             logger.warn("Non chat member.")
