@@ -157,8 +157,8 @@ async def roll_dice_c(
             )
         else:
             message = _(BOT_MESSAGES['dice_specify_num']).format(
-                min_dice=MIN_DICE,
-                max_dice=MAX_DICE
+                min_dice=min_dice,
+                max_dice=max_dice
             )
             await context.bot.send_message(
                 chat_id=update.effective_chat.id,
@@ -166,8 +166,8 @@ async def roll_dice_c(
             )
     else:
         message = _(BOT_MESSAGES['dice_specify_num']).format(
-            min_dice=MIN_DICE,
-            max_dice=MAX_DICE
+            min_dice=min_dice,
+            max_dice=max_dice
         )
         await context.bot.send_message(
             chat_id=update.effective_chat.id,

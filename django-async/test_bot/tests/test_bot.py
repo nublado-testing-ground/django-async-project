@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 import logging
 
 import pytest
@@ -7,9 +8,11 @@ from telethon.tl.types import PeerUser
 from telethon.utils import get_display_name
 
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 from bot_misc.bot_commands.misc import (
-    MIN_DICE, MAX_DICE
+    MIN_DICE, MAX_DICE,
+    BOT_MESSAGES as BOT_MISC_MESSAGES
 )
 
 from .conftest import (
@@ -30,10 +33,35 @@ def is_from_test_bot(message: Message, test_bot_id: int) -> bool:
             message.from_id.user_id == test_bot_id)
 
 
-def get_num_list_from_str(txt):
-    """Return a list of comma-separated numbers in string."""
+def get_num_list_from_str(txt: str):
+    """
+    Return a list of comma-separated numbers in string.
+    Example: "Hello 1, 2, 3 world" -> ['1', '2', '3]
+             "Hello 1 world." -> ['1']
+    """
     num_list = re.findall("\d+(?:,\d+)?", txt)
     return num_list
+
+
+# Simplifies the most frequent action - look for a button
+# with a given text either to check that it exists or click it.
+# def get_button_with_text(
+#     message: Message, text: str, strict: bool = False
+# ) -> Optional[MessageButton]:
+#     """Return MessageButton from Message with text or None."""
+#     if message.buttons is None:
+#         return None
+
+#     for row in message.buttons:
+#         for button in row:
+#             if strict:
+#                 is_match = text == button.text
+#             else:
+#                 is_match = text in button.text
+#             if is_match:
+#                 return button
+
+#     return None
 
 
 class TestBotCommands:
@@ -88,7 +116,10 @@ class TestBotCommands:
             assert resp.raw_text == f"{display_name} has rolled {nums[0]}."
 
             # Attempt roll with no argument.
-            error_msg = f"Please specify the number of dice ({MIN_DICE} - {MAX_DICE})."
+            error_msg = _(BOT_MISC_MESSAGES['dice_specify_num']).format(
+                min_dice=MIN_DICE,
+                max_dice=MAX_DICE
+            )   
             await conv.send_message(f"{cmd}")
             resp = await conv.get_response()
             assert resp.raw_text == error_msg
