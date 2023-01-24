@@ -2,8 +2,8 @@ import logging
 
 import httpx
 
-from django.apps import AppConfig
 from django.conf import settings
+from django.apps import AppConfig
 
 from core.utils import remove_lead_and_trail_slash
 

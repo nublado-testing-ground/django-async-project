@@ -48,7 +48,6 @@ class Bot(object):
                     self.webhook_url = f"{webhook_site}/{webhook_path}/{self.token}/"
             else:
                 raise ImproperlyConfigured(bot_mode_error)
-            logger.info(f"Bot {self.name} initiated with {dt['mode']}.")
         except Exception as e:
             logger.error(e)
 

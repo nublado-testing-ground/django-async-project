@@ -22,7 +22,7 @@ from bot_misc.bot_commands.misc import (
 logger = logging.getLogger('django')
 
 # To do:Verify that  bot is in group.
-GROUP_ID = settings.PROTO_GROUP_ID
+GROUP_ID = settings.TEST_GROUP_ID
 
 
 @restricted_group_member(group_id=GROUP_ID, group_chat=False)

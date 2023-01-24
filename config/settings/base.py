@@ -2,7 +2,6 @@ import os
 import sys
 from pathlib import Path
 
-from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_noop as _
 
 # Get key env values from the virtual environment.
@@ -11,7 +10,7 @@ def get_env_variable(var_name):
         return os.environ[var_name]
     except KeyError:
         error_msg = "Set the {} environment variable.".format(var_name)
-        raise ImproperlyConfigured(error_msg)
+        raise Exception(error_msg)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -46,7 +45,7 @@ LOCAL_APPS = [
     'group_admin.apps.GroupAdminConfig',
     'group_points.apps.GroupPointsConfig',
     'group_notes.apps.GroupNotesConfig',
-    'proto_bot.apps.ProtoBotConfig',
+    'test_bot.apps.TestBotConfig',
     'project_app.apps.ProjectAppConfig'
 ]
 
@@ -117,7 +116,7 @@ LOCALE_PATHS = (
 
 TIME_ZONE = 'UTC'
 USE_I18N = True
-USE_L10N = True
+# USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
@@ -183,13 +182,13 @@ BOT_MODE_WEBHOOK = "webhook"
 BOT_MODE_POLLING = "polling"
 
 # Command line arg to run this bot
-PROTO_BOT = 'protobot'
-PROTO_BOT_TOKEN = get_env_variable('PROTO_BOT_TOKEN')
-PROTO_GROUP_ID = int(get_env_variable('PROTO_GROUP_ID'))
-PROTO_REPO_ID = int(get_env_variable('PROTO_REPO_ID'))
-PROTO_GROUP_OWNER_ID = int(get_env_variable('PROTO_GROUP_OWNER_ID'))
-PROTO_SUDO_LIST = [
-    PROTO_GROUP_OWNER_ID, 
+TEST_BOT = "testbot"
+TEST_BOT_TOKEN = get_env_variable('TEST_BOT_TOKEN')
+TEST_GROUP_ID = int(get_env_variable('TEST_GROUP_ID'))
+TEST_REPO_ID = int(get_env_variable('TEST_REPO_ID'))
+TEST_GROUP_OWNER_ID = int(get_env_variable('TEST_GROUP_OWNER_ID'))
+TEST_SUDO_LIST = [
+    TEST_GROUP_OWNER_ID, 
 ]
 
 DJANGO_TELEGRAM = {
@@ -199,15 +198,20 @@ DJANGO_TELEGRAM = {
 	'webhook_path' : "bot/webhook",
     'set_webhook_path': "bot/setwebhook",
     'bots': {
-        PROTO_BOT_TOKEN: {
-            'token': PROTO_BOT_TOKEN,
-            'group_id': PROTO_GROUP_ID,
-            'repo_id': PROTO_REPO_ID,
-            'sudo_list': PROTO_SUDO_LIST
+        TEST_BOT_TOKEN: {
+            'token': TEST_BOT_TOKEN,
+            'group_id': TEST_GROUP_ID,
+            'repo_id': TEST_REPO_ID,
+            'sudo_list': TEST_SUDO_LIST
         },
+    },
+    'testing': {
+        'api_id': get_env_variable('TG_API_KEY'),
+        'api_hash': get_env_variable('TG_API_HASH'),
+        'api_session_str': get_env_variable('TG_API_SESSION_STR')
     }
 }
 
 BOT_CLI = {
-    PROTO_BOT: DJANGO_TELEGRAM['bots'][PROTO_BOT_TOKEN]
+    TEST_BOT: DJANGO_TELEGRAM['bots'][TEST_BOT_TOKEN]
 }

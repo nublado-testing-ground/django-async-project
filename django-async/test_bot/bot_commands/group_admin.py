@@ -24,8 +24,8 @@ from group_admin.bot_commands.group_admin import (
 
 logger = logging.getLogger('django')
 
-BOT_TOKEN = settings.PROTO_BOT_TOKEN
-GROUP_ID = settings.PROTO_GROUP_ID
+BOT_TOKEN = settings.TEST_BOT_TOKEN
+GROUP_ID = settings.TEST_GROUP_ID
 
 
 @send_typing_action
