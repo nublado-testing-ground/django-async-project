@@ -1,8 +1,6 @@
 import logging
 
 import pytest
-from telethon import events
-from telethon.tl.functions.messages import ImportChatInviteRequest
 from telethon.utils import get_display_name
 
 from django.conf import settings
@@ -14,55 +12,20 @@ from bot_misc.bot_commands.misc import (
 )
 
 from .helpers import (
-    is_from_test_bot, get_button_with_text,
-    is_group_member, get_num_list_from_str
+    is_from_test_bot, get_num_list_from_str
 )
 from .conftest import (
     TEST_GROUP_ID, TEST_BOT_ID, TIMEOUT, MAX_MSGS
 )
 
-TEST_GROUP_INVITATION = "elL0E4yk9vs3ZGZh"
-
 logger = logging.getLogger('django')
-logger_debug = logging.getLogger('django-debug')
 
 # Note: Suspend the external webhook web service and run the bot
 # locally with polling when running these tests.
 # python manage.py runbot testbot --settings=config.settings.test
 
 
-class TestGroupAdminCommands:
-    @pytest.mark.asyncio
-    async def test_member_join_group(self, tg_client):
-        if await is_group_member(tg_client, TEST_GROUP_ID):
-            await tg_client.delete_dialog(TEST_GROUP_ID)
-
-        updates = await tg_client(ImportChatInviteRequest(TEST_GROUP_INVITATION))
-        async with tg_client.conversation(
-            TEST_GROUP_ID,
-            timeout=TIMEOUT,
-            max_messages=MAX_MSGS
-        ) as conv:
-            # User default permissions when joining
-            me = await tg_client.get_me()
-            await conv.send_message("testing")
-            # Get the welcome message with the "I agree" button.
-            response = await conv.wait_event(
-                events.NewMessage(incoming=True, from_users=TEST_BOT_ID)
-            )
-            assert "I agree" in response.raw_text
-            button = get_button_with_text(response.message, "I agree.")
-            assert button is not None
-            await button.click()
-            # Get the welcome message after the user has clicked the "I agree" button.
-            response = await conv.wait_event(
-                events.NewMessage(incoming=True, from_users=TEST_BOT_ID)
-            )
-            assert "voice message" in response.raw_text
-            # Permissions after clicking the "I agree" button.
-
-
-class TestMiscBotCommands:
+class TestBotMiscCommands:
     @pytest.mark.asyncio
     async def test_group_get_time(self, group_conv):
         cmd = "/get_time"

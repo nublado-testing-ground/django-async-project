@@ -1,0 +1,69 @@
+Message(id=1017, peer_id=PeerChannel(channel_id=1717149801), date=datetime.datetime(2023, 1, 25, 18, 42, 15, tzinfo=datetime.timezone.utc), message='Welcome to the group, Christopher Lluvioso.\n\nPlease read the following rules and click the "I agree" button to participate.\n\nRules\n- Communicate in only English and Spanish.\n- Be a good example. Help others out with corrections.', out=False, mentioned=True, media_unread=True, silent=False, post=False, from_scheduled=False, legacy=False, edit_hide=False, pinned=False, noforwards=False, from_id=PeerUser(user_id=5863994740), fwd_from=None, via_bot_id=None, reply_to=None, media=None, reply_markup=ReplyInlineMarkup(rows=[KeyboardButtonRow(buttons=[KeyboardButtonCallback(text='I agree.', data=b'chat_member_welcome_agree 5819985884', requires_password=False)])]), entities=[MessageEntityMentionName(offset=22, length=20, user_id=5819985884), MessageEntityBold(offset=125, length=5)], views=None, forwards=None, replies=MessageReplies(replies=0, replies_pts=1426, comments=False, recent_repliers=[], channel_id=None, max_id=None, read_max_id=None), edit_date=None, post_author=None, grouped_id=None, reactions=None, restriction_reason=[], ttl_period=None)
+Message(
+	id=1020,
+	peer_id=PeerChannel(
+		channel_id=1717149801
+	),
+	date=datetime.datetime(2023, 1, 25, 18, 43, 48, tzinfo=datetime.timezone.utc),
+	message='Welcome to the group, Christopher Lluvioso.\n\nPlease read the following rules and click the "I agree" button to participate.\n\nRules\n- Communicate in only English and Spanish.\n- Be a good example. Help others out with corrections.',
+	out=False,
+	mentioned=True,
+	media_unread=True,
+	silent=False,
+	post=False,
+	from_scheduled=False,
+	legacy=False,
+	edit_hide=False,
+	pinned=False,
+	noforwards=False,
+	from_id=PeerUser(
+		user_id=5863994740
+	),
+	fwd_from=None,
+	via_bot_id=None,
+	reply_to=None,
+	media=None,
+	reply_markup=ReplyInlineMarkup(
+		rows=[
+			KeyboardButtonRow(
+				buttons=[
+					KeyboardButtonCallback(
+						text='I agree.',
+						data=b'chat_member_welcome_agree 5819985884',
+						requires_password=False
+					),
+				]
+			),
+		]
+	),
+	entities=[
+		MessageEntityMentionName(
+			offset=22,
+			length=20,
+			user_id=5819985884
+		),
+		MessageEntityBold(
+			offset=125,
+			length=5
+		),
+	],
+	views=None,
+	forwards=None,
+	replies=MessageReplies(
+		replies=0,
+		replies_pts=1431,
+		comments=False,
+		recent_repliers=[
+		],
+		channel_id=None,
+		max_id=None,
+		read_max_id=None
+	),
+	edit_date=None,
+	post_author=None,
+	grouped_id=None,
+	reactions=None,
+	restriction_reason=[
+	],
+	ttl_period=None
+)

@@ -49,9 +49,8 @@ async def tg_client():
 @pytest_asyncio.fixture()
 async def group_conv(tg_client):
     """Open a conversation with the bot."""
-    group = await tg_client.get_entity(TEST_GROUP_ID)
     async with tg_client.conversation(
-        group,
+        TEST_GROUP_ID,
         timeout=TIMEOUT,
         max_messages=MAX_MSGS
     ) as conv:
