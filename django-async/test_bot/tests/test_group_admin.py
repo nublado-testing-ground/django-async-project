@@ -22,6 +22,7 @@ from .conftest import (
 TEST_GROUP_INVITATION = "elL0E4yk9vs3ZGZh"
 
 logger = logging.getLogger('django')
+logger_debug = logging.getLogger('django-debug')
 
 # Note: Suspend the external webhook web service and run the bot
 # locally with polling when running these tests.
@@ -31,23 +32,32 @@ logger = logging.getLogger('django')
 class TestGroupAdminCommands:
     @pytest.mark.asyncio
     async def test_member_join_group(self, tg_client):
+        # Leave the group if already a memeber.
         if await is_group_member(tg_client, TEST_GROUP_ID):
             await tg_client.delete_dialog(TEST_GROUP_ID)
 
+        # Join the group.
         updates = await tg_client(ImportChatInviteRequest(TEST_GROUP_INVITATION))
+
+        # Check if new user can send messages (pending).
+
+        # Conversation in group
         async with tg_client.conversation(
             TEST_GROUP_ID,
             timeout=TIMEOUT,
             max_messages=MAX_MSGS
         ) as conv:
-            # User default permissions when joining
+            # Self user
             me = await tg_client.get_me()
             # Get the welcome message with the "I agree" button.
             response = await conv.wait_event(
                 events.NewMessage(incoming=True, from_users=TEST_BOT_ID)
             )
-            logger.info(response.message.message)
-            assert "I agree" in response.raw_text
+            greeting = f"Welcome to the group, {get_display_name(me)}"
+            welcome_msg = "Please read the following rules " \
+                          "and click the \"I agree\" button"
+            assert greeting in response.raw_text
+            assert welcome_msg in response.raw_text
             button = get_button_with_text(response.message, "I agree.")
             assert button is not None
             await button.click()
@@ -55,5 +65,9 @@ class TestGroupAdminCommands:
             response = await conv.wait_event(
                 events.NewMessage(incoming=True, from_users=TEST_BOT_ID)
             )
-            assert "voice message" in response.raw_text
-            # # Permissions after clicking the "I agree" button.
+            welcome_msg = "We require new members to introduce themselves " \
+                          "with a voice message."
+            assert greeting in response.raw_text
+            assert welcome_msg in response.raw_text
+
+            # Permissions after clicking the "I agree" button. (pending)
