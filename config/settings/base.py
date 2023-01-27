@@ -149,7 +149,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'nublado-debug.log',
+            'filename': 'debug.log',
         },
         'console': {
             'level': 'INFO',

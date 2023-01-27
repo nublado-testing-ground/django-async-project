@@ -8,12 +8,13 @@ from telethon.utils import get_display_name
 from django.conf import settings
 from django.utils.translation import gettext as _
 
+from django_telegram.models import GroupMember
 from group_admin.bot_commands.group_admin import (
-    BOT_MESSAGES
+    BOT_MESSAGES, add_member
 )
-
 from .helpers import (
-    get_button_with_text, is_group_member
+    get_button_with_text, is_group_member,
+    get_group_member
 )
 from .conftest import (
     TEST_GROUP_ID, TEST_BOT_ID, TIMEOUT, MAX_MSGS
@@ -30,16 +31,22 @@ logger_debug = logging.getLogger('django-debug')
 
 
 class TestGroupAdminCommands:
+    @pytest.mark.django_db(transaction=True)
     @pytest.mark.asyncio
     async def test_member_join_group(self, tg_client):
+        # Self user
+        me = await tg_client.get_me()
+
         # Leave the group if already a memeber.
         if await is_group_member(tg_client, TEST_GROUP_ID):
             await tg_client.delete_dialog(TEST_GROUP_ID)
 
+        # Pending: Check if member not in group.
+
         # Join the group.
         updates = await tg_client(ImportChatInviteRequest(TEST_GROUP_INVITATION))
 
-        # Check if new user can send messages (pending).
+        # Pending: Check if new member can send messages before pressing the confirmation button.
 
         # Conversation in group
         async with tg_client.conversation(
@@ -47,9 +54,7 @@ class TestGroupAdminCommands:
             timeout=TIMEOUT,
             max_messages=MAX_MSGS
         ) as conv:
-            # Self user
-            me = await tg_client.get_me()
-            # Get the welcome message with the "I agree" button.
+            # Get the welcome message with the confirmation button.
             response = await conv.wait_event(
                 events.NewMessage(incoming=True, from_users=TEST_BOT_ID)
             )
@@ -61,7 +66,7 @@ class TestGroupAdminCommands:
             button = get_button_with_text(response.message, "I agree.")
             assert button is not None
             await button.click()
-            # # Get the welcome message after the user has clicked the "I agree" button.
+            # Get the welcome message after the user has clicked the confirmation button.
             response = await conv.wait_event(
                 events.NewMessage(incoming=True, from_users=TEST_BOT_ID)
             )
@@ -70,4 +75,8 @@ class TestGroupAdminCommands:
             assert greeting in response.raw_text
             assert welcome_msg in response.raw_text
 
-            # Permissions after clicking the "I agree" button. (pending)
+            group_member = await get_group_member(TEST_GROUP_ID, me.id)
+            assert group_member is None
+
+            # Pending: Check if new member can send messages after clicking 
+            # the confirmation button.

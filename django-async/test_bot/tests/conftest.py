@@ -31,7 +31,6 @@ def event_loop():
 
 @pytest_asyncio.fixture(scope="session")
 async def tg_client():
-    """Get the userbot Telegram client."""
     client = TelegramClient(
         StringSession(SESSION_STR),
         API_ID,

@@ -7,7 +7,6 @@ from telegram import (
     Bot, Update, ChatPermissions,
     InlineKeyboardButton, InlineKeyboardMarkup
 )
-
 from telegram.ext import (
     ContextTypes
 )
@@ -110,24 +109,29 @@ async def set_bot_language(
 #         text=message
 #     )
 
-@sync_to_async
-def add_member(user_id, group_id):
-    member_exists = GroupMember.objects.filter(
+
+async def has_member(group_id: int, user_id: int) -> bool:
+    member_exists = await GroupMember.objects.filter(
         group_id=group_id,
         user_id=user_id
-    ).exists()
+    ).aexists()
+    return member_exists
+
+
+async def add_member(group_id, user_id):
+    member_exists = await has_member(group_id, user_id)
     if not member_exists:
-        GroupMember.objects.create_group_member(
+        await sync_to_async(GroupMember.objects.create_group_member)(
             group_id=group_id,
             user_id=user_id
         )
 
-@sync_to_async
-def remove_member(user_id, group_id):
-    GroupMember.objects.filter(
+
+async def remove_member(user_id, group_id):
+    await GroupMember.objects.filter(
         group_id=group_id,
         user_id=user_id
-    ).delete()
+    ).adelete()
 
 
 async def restrict_chat_member(bot: Bot, user_id: int, chat_id: int):
@@ -181,7 +185,7 @@ async def member_join(
     if update.message.new_chat_members:
         for user in update.message.new_chat_members:
             # Add user to db
-            await add_member(user.id, group_id)
+            await add_member(group_id, user.id)
             # Mute user until he or she presses the "I agree" button.
             await restrict_chat_member(context.bot, user.id, group_id)
             callback_data = AGREE_BTN_CALLBACK_DATA + " " + str(user.id)
